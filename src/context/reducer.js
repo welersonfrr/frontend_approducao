@@ -35,6 +35,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         apData: {
+          id: action.apData.id,
           codigo: action.apData.codigo,
           dt_fim: action.apData.dt_fim,
           dt_inicio: action.apData.dt_inicio,

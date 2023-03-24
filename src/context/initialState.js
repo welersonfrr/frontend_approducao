@@ -12,6 +12,7 @@ export const initialState = {
     produto: null,
   },
   apData: {
+    id: null,
     codigo: null,
     dt_fim: null,
     dt_inicio: null,

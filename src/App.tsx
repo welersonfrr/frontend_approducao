@@ -5,6 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { Route, Routes } from "react-router-dom";
 import ProductionDetails from "./pages/ProductionDetails";
 import Login from "./pages/Login";
+import Print from "./pages/Print";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/*" element={<SearchOp />} />
           <Route path="/production" element={<ProductionDetails />} />
+          <Route path="/print" element={<Print />} />
         </Routes>
       </main>
     </AnimatePresence>

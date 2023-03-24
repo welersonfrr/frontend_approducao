@@ -46,12 +46,14 @@ const ProductionDetails = () => {
           usuario: user.username,
         }
       );
-      console.log(result);
+
       dispatch({
         type: actionType.SET_AP,
-        apData: result.data,
+        apData: result.data.data,
       });
+
       setloading(false);
+      navigate("/print");
     } catch (error: any) {
       console.log(error.toString());
       setloading(false);
