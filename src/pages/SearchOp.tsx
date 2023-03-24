@@ -1,25 +1,70 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { MdSearch } from "react-icons/md";
 import AlertBox from "../components/AlertBox";
+import axios from "axios";
+import SpinnerLoading from "../components/SpinnerLoading";
+import { useStateValue } from "../context/StateProvider";
+import { actionType } from "../context/reducer";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const SearchOp = () => {
   const ref = useRef<HTMLInputElement>(null);
   const [showAlert, setshowAlert] = useState(false);
   const [mensagem, setmensagem] = useState("");
+  const [loading, setloading] = useState(false);
+  const [{ user }, dispatch] = useStateValue();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.username == null) {
+      navigate("/login");
+    }
+  }, []);
+
+  const trowError = (msgError: string) => {
+    setmensagem(msgError);
+    setshowAlert(true);
+    setloading(false);
+    setTimeout(() => {
+      setshowAlert(false);
+    }, 3000);
+  };
 
   const search = async () => {
-    console.log(ref.current?.value);
+    setloading(true);
     if (ref.current?.value === "") {
-      setmensagem("Por favor forneca uma OP");
-      setshowAlert(true);
-      setTimeout(() => {
-        setshowAlert(false);
-      }, 3000);
+      trowError("Por favor forneca uma OP");
     } else {
       try {
+        const result = await axios.get(
+          `http://localhost:3380/order/op?op=${ref.current?.value}&filial=${user.filial}`
+        );
+
+        dispatch({
+          type: actionType.SET_OP,
+          opData: result.data.data,
+        });
+
+        setloading(false);
+        if (ref.current != null) {
+          ref.current.value = "";
+        }
+        navigate("/production");
       } catch (error: any) {
-        console.log(error.toString());
+        setloading(false);
+        if (error.response?.status === 404) {
+          trowError("OP não encontrada.");
+        } else {
+          trowError(
+            `${error.toString()} - Contate o administrador do sistema.`
+          );
+          console.log(error.toString());
+        }
+
+        if (ref.current != null) {
+          ref.current.value = "";
+        }
       }
     }
   };
@@ -38,6 +83,12 @@ const SearchOp = () => {
         <MdSearch className=" m-4 cursor-pointer" onClick={search} />
       </div>
       {showAlert && <AlertBox mensagem={mensagem} />}
+      {/* loading spinner */}
+      {loading && (
+        <div className="absolute w-screen h-screen flex items-center justify-center backdrop-blur-sm bg-white/30">
+          <SpinnerLoading />
+        </div>
+      )}
     </div>
   );
 };

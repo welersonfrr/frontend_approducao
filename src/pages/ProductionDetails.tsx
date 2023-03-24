@@ -1,26 +1,77 @@
-import React, { useState } from "react";
-import { MdAddCircleOutline, MdRemoveCircleOutline } from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import {
+  MdAddCircleOutline,
+  MdRemoveCircleOutline,
+  MdKeyboardBackspace,
+} from "react-icons/md";
 import InputDisable from "../components/InputDisable";
 import { motion } from "framer-motion";
+import { useStateValue } from "../context/StateProvider";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import SpinnerLoading from "../components/SpinnerLoading";
+import { actionType } from "../context/reducer";
 
 const ProductionDetails = () => {
   const [value, setvalue] = useState(0);
   const [showConfirm, setshowConfirm] = useState(false);
+  const [loading, setloading] = useState(false);
+  const [{ user, opData }, dispatch] = useStateValue();
+  const navigate = useNavigate();
 
-  const data = {
-    op: "035898",
-    codigo: "PA03069904302",
-    nome: "FAR. DOM. MARGARIDA PAPEL 5X5",
-    lote: "03L5896-15",
+  useEffect(() => {
+    if (user.username == null) {
+      navigate("/login");
+    }
+    if (opData.codigo === null) {
+      navigate("/");
+    }
+  }, []);
+
+  const confirmProduction = async () => {
+    setshowConfirm(false);
+    setloading(true);
+
+    try {
+      const result = await axios.post(
+        `http://localhost:3380/order/production`,
+        {
+          filial: user.filial,
+          op: opData.op,
+          codigo: opData.codigo,
+          produto: opData.produto,
+          lote: opData.lote,
+          dt_validade: opData.dtvalidade,
+          quantidade: value,
+          usuario: user.username,
+        }
+      );
+      console.log(result);
+      dispatch({
+        type: actionType.SET_AP,
+        apData: result.data,
+      });
+      setloading(false);
+    } catch (error: any) {
+      console.log(error.toString());
+      setloading(false);
+    }
   };
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
       <div>
-        <InputDisable title={"OP"} value={data.op} />
-        <InputDisable title={"CODIGO"} value={data.codigo} />
-        <InputDisable title={"PRODUTO"} value={data.nome} />
-        <InputDisable title={"LOTE"} value={data.lote} />
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          className="w-auto h-auto"
+          onClick={() => navigate("/")}
+        >
+          <MdKeyboardBackspace className="w-14 h-14" />
+        </motion.button>
+        <InputDisable title={"OP"} value={opData.op ?? ""} />
+        <InputDisable title={"CODIGO"} value={opData.codigo ?? ""} />
+        <InputDisable title={"PRODUTO"} value={opData.produto ?? ""} />
+        <InputDisable title={"LOTE"} value={opData.lote ?? ""} />
 
         <div className="w-auto h-auto flex flex-row items-center justify-center ">
           <motion.button
@@ -88,15 +139,19 @@ const ProductionDetails = () => {
                   whileTap={{ scale: 0.95 }}
                   whileHover={{ scale: 1.1 }}
                   className="p-3 bg-green-500 hover:bg-gradient-to-b hover:from-green-500 hover:to-green-300 rounded-md text-white uppercase font-semibold"
-                  onClick={() => {
-                    setshowConfirm(false);
-                  }}
+                  onClick={confirmProduction}
                 >
                   confirmar
                 </motion.button>
               </div>
             </motion.div>
           </div>
+        </div>
+      )}
+      {/* loading spinner */}
+      {loading && (
+        <div className="absolute w-screen h-screen flex items-center justify-center backdrop-blur-sm bg-white/30">
+          <SpinnerLoading />
         </div>
       )}
     </div>
