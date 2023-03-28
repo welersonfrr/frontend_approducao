@@ -13,6 +13,7 @@ const reducer = (state, action) => {
         user: {
           username: action.user.username,
           filial: action.user.filial,
+          controller: action.user.controller,
         },
       };
 
@@ -22,11 +23,13 @@ const reducer = (state, action) => {
         ...state,
         opData: {
           codigo: action.opData.codigo,
+          codbel: action.opData.codbel,
           dtvalidade: action.opData.dtvalidade,
           filial: action.opData.filial,
           lote: action.opData.lote,
           op: action.opData.op,
           produto: action.opData.produto,
+          qtdpad: action.opData.qtdpad,
         },
       };
 

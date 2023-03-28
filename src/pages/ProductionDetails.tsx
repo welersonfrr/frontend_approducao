@@ -13,10 +13,11 @@ import SpinnerLoading from "../components/SpinnerLoading";
 import { actionType } from "../context/reducer";
 
 const ProductionDetails = () => {
-  const [value, setvalue] = useState(0);
   const [showConfirm, setshowConfirm] = useState(false);
   const [loading, setloading] = useState(false);
   const [{ user, opData }, dispatch] = useStateValue();
+
+  const [value, setvalue] = useState(Number(opData.qtdpad));
   const navigate = useNavigate();
 
   useEffect(() => {

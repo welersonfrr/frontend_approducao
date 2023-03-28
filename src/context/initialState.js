@@ -2,14 +2,17 @@ export const initialState = {
   user: {
     username: null,
     filial: null,
+    controller: null,
   },
   opData: {
     codigo: null,
+    codbel: null,
     dtvalidade: null,
     filial: null,
     lote: null,
     op: null,
     produto: null,
+    qtdpad: null,
   },
   apData: {
     id: null,

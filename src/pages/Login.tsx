@@ -47,6 +47,8 @@ const Login = () => {
         if (inputPass.current != null) {
           inputPass.current.value = "";
         }
+        // console.log(result.data.data.record);
+
         navigate("/");
       } catch (error: any) {
         setLoading(false);

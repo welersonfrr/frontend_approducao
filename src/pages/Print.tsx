@@ -7,7 +7,7 @@ import DataSheet from "../components/DataSheet";
 import { useStateValue } from "../context/StateProvider";
 
 const Print = () => {
-  const [{ user, apData }, dispatch] = useStateValue();
+  const [{ user, apData, opData }, dispatch] = useStateValue();
   const elementRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -50,8 +50,8 @@ const Print = () => {
         ref={elementRef}
         className="flex flex-col items-center justify-center gap-8 pt-10"
       >
-        <DataSheet data={apData} />
-        <DataSheet data={apData} />
+        <DataSheet />
+        <DataSheet />
       </div>
     </div>
   );

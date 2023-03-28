@@ -1,8 +1,11 @@
 import React from "react";
 import { QRCodeSVG } from "qrcode.react";
+import { useStateValue } from "../context/StateProvider";
 
-const DataSheet = (data: any) => {
-  data = data.data;
+const DataSheet = () => {
+  const [{ apData, opData }] = useStateValue();
+
+  const codbel = opData.codbel;
 
   const formatData = (value: any) => {
     const dia = value.substr(6, 2);
@@ -22,28 +25,32 @@ const DataSheet = (data: any) => {
           <div className="col-span-3 grid grid-rows-4 border-r-2 border-black">
             {/* cima */}
             <div className="grid grid-cols-3 border-b-2 border-black">
-              <div className="col-span-1 pl-1 flex items-center">{data.op}</div>
-              <div className="flex items-center">{data.codigo}</div>
+              <div className="col-span-1 pl-1 flex items-center">
+                {apData.op}
+              </div>
+              <div className="flex items-center">{apData.codigo}</div>
+              <div className="flex items-center">{codbel}</div>
             </div>
             {/* baixo */}
             <div className="row-span-3 flex items-center justify-center w-full text-center text-2xl font-bold">
-              {data.produto}
+              {apData.produto}
             </div>
           </div>
           {/* direita */}
-          <div className="flex items-center justify-center text-[5rem]">
-            {data.numero}
+          <div className="flex flex-col items-center justify-center text-[3rem]">
+            <p className="text-[1rem]">Pallet n:</p>
+            {apData.numero}
           </div>
         </div>
         {/* 2/3 */}
         <div className="grid grid-cols-4 border-b-2 border-black">
           {/* esquerda */}
           <div className="col-span-3 border-r-2 border-black flex items-center justify-center w-full text-center text-[3rem] font-bold">
-            {data.lote}
+            {apData.lote}
           </div>
           {/* direita */}
           <div className="flex items-center justify-center">
-            <QRCodeSVG value={data.id} />
+            <QRCodeSVG value={apData.id} />
           </div>
         </div>
         {/* 3/3 */}
@@ -56,7 +63,7 @@ const DataSheet = (data: any) => {
                 Inicio
               </p>
               <p className="flex h-auto w-auto items-center justify-center">
-                {formatData(data.dt_inicio)} - {data.hr_inicio}
+                {formatData(apData.dt_inicio)} - {apData.hr_inicio}
               </p>
             </div>
             {/* 2/3 */}
@@ -65,7 +72,7 @@ const DataSheet = (data: any) => {
                 Fim
               </p>
               <p className="flex h-auto w-auto items-center justify-center">
-                {formatData(data.dt_fim)} - {data.hr_fim}
+                {formatData(apData.dt_fim)} - {apData.hr_fim}
               </p>
             </div>
             {/* 3/3 */}
@@ -75,8 +82,9 @@ const DataSheet = (data: any) => {
             </div>
           </div>
           {/* direita */}
-          <div className="col-span-2 flex items-center justify-center w-full text-center text-[5rem] font-bold">
-            {data.quantidade}
+          <div className="col-span-2 flex flex-col items-center justify-center w-full text-center text-[5rem] font-bold">
+            <p className="text-[1rem]">Quantidade:</p>
+            {apData.quantidade}
           </div>
         </div>
       </div>

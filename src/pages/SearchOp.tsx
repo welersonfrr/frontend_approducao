@@ -1,18 +1,26 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
-import { MdSearch } from "react-icons/md";
+import {
+  MdSearch,
+  MdAccountCircle,
+  MdLogout,
+  MdOutlineInsertChartOutlined,
+} from "react-icons/md";
+import { motion } from "framer-motion";
 import AlertBox from "../components/AlertBox";
 import axios from "axios";
 import SpinnerLoading from "../components/SpinnerLoading";
 import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/reducer";
 import { Navigate, useNavigate } from "react-router-dom";
+import { initialState } from "../context/initialState";
 
 const SearchOp = () => {
   const ref = useRef<HTMLInputElement>(null);
   const [showAlert, setshowAlert] = useState(false);
   const [mensagem, setmensagem] = useState("");
   const [loading, setloading] = useState(false);
+  const [popupMenu, setPopupMenu] = useState(false);
   const [{ user }, dispatch] = useStateValue();
   const navigate = useNavigate();
 
@@ -20,7 +28,22 @@ const SearchOp = () => {
     if (user.username == null) {
       navigate("/login");
     }
-  }, []);
+  }, [user]);
+
+  const handleLogout = () => {
+    dispatch({
+      type: actionType.SET_USER,
+      user: initialState.user,
+    });
+  };
+
+  const handleMenu = () => {
+    setPopupMenu(!popupMenu);
+  };
+
+  const handlePageDados = () => {
+    navigate("/details");
+  };
 
   const trowError = (msgError: string) => {
     setmensagem(msgError);
@@ -87,6 +110,33 @@ const SearchOp = () => {
       {loading && (
         <div className="absolute w-screen h-screen flex items-center justify-center backdrop-blur-sm bg-white/30">
           <SpinnerLoading />
+        </div>
+      )}
+      <div className="absolute top-4 right-4">
+        <motion.button whileTap={{ scale: 0.75 }} onClick={handleMenu}>
+          <MdAccountCircle className="w-10 h-10" />
+        </motion.button>
+      </div>
+      {popupMenu && (
+        <div className="w-auto min-w-[120px] h-auto bg-white drop-shadow-md absolute top-14 right-4">
+          <div className="w-full h-full flex flex-col gap-3 p-1">
+            {user.controller && (
+              <div
+                className="flex flex-row p-2 justify-start items-center cursor-pointer gap-1"
+                onClick={handlePageDados}
+              >
+                <MdOutlineInsertChartOutlined />
+                <p>Dados</p>
+              </div>
+            )}
+            <div
+              className="flex flex-row p-2 justify-start items-center cursor-pointer gap-1"
+              onClick={handleLogout}
+            >
+              <MdLogout />
+              <p>Log out</p>
+            </div>
+          </div>
         </div>
       )}
     </div>
