@@ -6,6 +6,7 @@ import SpinnerLoading from "../components/SpinnerLoading";
 import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/reducer";
 import { useNavigate } from "react-router-dom";
+import { config } from "../utils/config";
 
 const Login = () => {
   const inputUser = useRef<HTMLInputElement>(null);
@@ -26,6 +27,8 @@ const Login = () => {
   };
 
   const auth = async () => {
+    console.log(`http://${config.IP_SERVER}:${config.PORT}/auth`);
+
     setLoading(true);
     if (inputUser.current?.value === "") {
       trowError("Informe um usuário");
@@ -33,10 +36,13 @@ const Login = () => {
       trowError("Informe uma senha");
     } else {
       try {
-        const result = await axios.post(`http://localhost:3380/auth`, {
-          username: inputUser.current?.value,
-          password: inputPass.current?.value,
-        });
+        const result = await axios.post(
+          `http://${config.IP_SERVER}:${config.PORT}/auth`,
+          {
+            username: inputUser.current?.value,
+            password: inputPass.current?.value,
+          }
+        );
 
         dispatch({
           type: actionType.SET_USER,

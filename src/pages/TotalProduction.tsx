@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as dotenv from "dotenv";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,8 +14,7 @@ import { actionType } from "../context/reducer";
 import { initialState } from "../context/initialState";
 import ResumeProduction from "../components/ResumeProduction";
 import SpinnerLoading from "../components/SpinnerLoading";
-
-dotenv.config();
+import { config } from "../utils/config";
 
 const TotalProduction = () => {
   const [popupMenu, setPopupMenu] = useState(false);
@@ -30,7 +28,7 @@ const TotalProduction = () => {
     try {
       await axios
         .get(
-          `http://${process.env.IP_SERVER}:${process.env.PORT}/order/production/resume?filial=${user.filial}&qtd=5`
+          `http://${config.IP_SERVER}:${config.PORT}/order/production/resume?filial=${user.filial}&qtd=5`
         )
         .then((response) => {
           setShowingData(response);

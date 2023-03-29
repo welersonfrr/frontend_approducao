@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import * as dotenv from "dotenv";
 import {
   MdAddCircleOutline,
   MdRemoveCircleOutline,
@@ -12,8 +11,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import SpinnerLoading from "../components/SpinnerLoading";
 import { actionType } from "../context/reducer";
-
-dotenv.config();
+import { config } from "../utils/config";
 
 const ProductionDetails = () => {
   const [showConfirm, setshowConfirm] = useState(false);
@@ -38,7 +36,7 @@ const ProductionDetails = () => {
 
     try {
       const result = await axios.post(
-        `http://${process.env.IP_SERVER}:${process.env.PORT}/order/production`,
+        `http://${config.IP_SERVER}:${config.PORT}/order/production`,
         {
           filial: user.filial,
           op: opData.op,
