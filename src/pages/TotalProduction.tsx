@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import * as dotenv from "dotenv";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,7 +7,7 @@ import {
   MdKeyboardBackspace,
   MdLogout,
   MdOutlineInsertChartOutlined,
-  MdSearch,
+  MdRefresh,
 } from "react-icons/md";
 import axios from "axios";
 import { useStateValue } from "../context/StateProvider";
@@ -14,6 +15,8 @@ import { actionType } from "../context/reducer";
 import { initialState } from "../context/initialState";
 import ResumeProduction from "../components/ResumeProduction";
 import SpinnerLoading from "../components/SpinnerLoading";
+
+dotenv.config();
 
 const TotalProduction = () => {
   const [popupMenu, setPopupMenu] = useState(false);
@@ -27,7 +30,7 @@ const TotalProduction = () => {
     try {
       await axios
         .get(
-          `http://localhost:3380/order/production/resume?filial=${user.filial}&qtd=5`
+          `http://${process.env.IP_SERVER}:${process.env.PORT}/order/production/resume?filial=${user.filial}&qtd=5`
         )
         .then((response) => {
           setShowingData(response);
@@ -69,13 +72,25 @@ const TotalProduction = () => {
         <MdAccountCircle className="w-10 h-10" />
       </motion.button>
       <div className="w-[1000px] flex flex-col items-center justify-start">
-        <div className="w-full flex justify-start flex-row gap-4 mt-4">
+        <div className="w-full flex justify-between flex-row gap-4 mt-4">
           <motion.button
             whileHover={{ scale: 1.1 }}
             className="w-auto h-auto"
             onClick={() => navigate("/")}
           >
             <MdKeyboardBackspace className="w-14 h-14" />
+          </motion.button>
+          <motion.button
+            whileHover={{ rotate: 360 }}
+            transition={{
+              duration: 0.5,
+            }}
+            onClick={() => {
+              setloading(true);
+              search();
+            }}
+          >
+            <MdRefresh className="w-14 h-14" />
           </motion.button>
           {/* <div className="w-auto h-auto flex flex-row items-center justify-center bg-gray-50 rounded-xl border-4 border-gray-400">
             <input

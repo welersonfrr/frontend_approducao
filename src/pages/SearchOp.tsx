@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import * as dotenv from "dotenv";
 import { useState } from "react";
 import {
   MdSearch,
@@ -14,6 +15,8 @@ import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/reducer";
 import { Navigate, useNavigate } from "react-router-dom";
 import { initialState } from "../context/initialState";
+
+dotenv.config();
 
 const SearchOp = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -61,7 +64,7 @@ const SearchOp = () => {
     } else {
       try {
         const result = await axios.get(
-          `http://localhost:3380/order/op?op=${ref.current?.value}&filial=${user.filial}`
+          `http://${process.env.IP_SERVER}:${process.env.PORT}/order/op?op=${ref.current?.value}&filial=${user.filial}`
         );
 
         dispatch({
