@@ -52,8 +52,6 @@ const Confirmation = () => {
       )
       .then((response) => setNonConfirmedData(response.data))
       .finally(() => setLoading(false));
-
-    console.log(nonConfirmedData);
   };
 
   const postConfirmData = async (obs: any) => {
