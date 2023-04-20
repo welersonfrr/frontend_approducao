@@ -5,6 +5,7 @@ import {
   MdAccountCircle,
   MdLogout,
   MdOutlineInsertChartOutlined,
+  MdCheckCircleOutline,
 } from "react-icons/md";
 import { motion } from "framer-motion";
 import AlertBox from "../components/AlertBox";
@@ -44,6 +45,9 @@ const SearchOp = () => {
 
   const handlePageDados = () => {
     navigate("/details");
+  };
+  const handlePageConfirmation = () => {
+    navigate("/confirmation");
   };
 
   const trowError = (msgError: string) => {
@@ -128,6 +132,15 @@ const SearchOp = () => {
               >
                 <MdOutlineInsertChartOutlined />
                 <p>Dados</p>
+              </div>
+            )}
+            {user.controller && (
+              <div
+                className="flex flex-row p-2 justify-start items-center cursor-pointer gap-1"
+                onClick={handlePageConfirmation}
+              >
+                <MdCheckCircleOutline />
+                <p>Confirmação</p>
               </div>
             )}
             <div

@@ -19,9 +19,13 @@ const ResumeProduction = (data: any) => {
   return (
     <div>
       {/* blocks */}
-      <div className="w-full h-auto min-h-[200px] mt-4 py-4 bg-white rounded-2xl border-2 border-black grid grid-cols-4">
+      <div
+        className={`w-full h-auto mt-4 py-4 bg-white rounded-2xl border-2 ${
+          data.confirmado ? "border-black" : "border-red-400 bg-red-200"
+        } grid grid-cols-4`}
+      >
         {/* esquerda */}
-        <div className="col-span-3 grid grid-rows-4 m-2 gap-3 border-r-2 border-black ">
+        <div className="col-span-3 grid grid-rows-5 m-2 border-r-2 border-black ">
           <div className="grid grid-cols-2">
             <div>{data.op}</div>
             <div>{data.codigo}</div>
@@ -42,9 +46,12 @@ const ResumeProduction = (data: any) => {
               <div>{data.hr_fim}</div>
             </div>
           </div>
+          <div className="break-normal border-t-2 border-black">
+            OBS.: {data.obs}
+          </div>
         </div>
         {/* direita */}
-        <div className="col-span-1 grid m-2 gap-3">
+        <div className="col-span-1 grid m-2">
           <div className="flex flex-row justify-between items-center">
             <p>Qtd Pallets</p>
             <div className="flex items-center justify-center py-4 min-w-[90px] text-[1.5rem] bg-slate-800 text-white rounded-lg uppercase font-bold ">
@@ -57,7 +64,7 @@ const ResumeProduction = (data: any) => {
               {data.quantidade}
             </div>
           </div>
-          <div className="flex items-center justify-center">
+          {/* <div className="flex items-center justify-center">
             <motion.button
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.1 }}
@@ -67,7 +74,7 @@ const ResumeProduction = (data: any) => {
             >
               Detalhes
             </motion.button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

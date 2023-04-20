@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   MdAccountCircle,
+  MdCheckCircleOutline,
   MdKeyboardBackspace,
   MdLogout,
-  MdOutlineInsertChartOutlined,
   MdRefresh,
 } from "react-icons/md";
 import axios from "axios";
@@ -19,16 +19,40 @@ import { config } from "../utils/config";
 const TotalProduction = () => {
   const [popupMenu, setPopupMenu] = useState(false);
   const [loading, setloading] = useState(true);
-  const ref = useRef<HTMLInputElement>(null);
+  const [qtdOp, setQtdOp] = useState<number>(5);
   const navigate = useNavigate();
   const [{ user }, dispatch] = useStateValue();
   const [showingData, setShowingData] = useState<any>();
 
+  const data = [
+    {
+      id: "7cx7pba69skdxto",
+      numero: "5",
+      usuario: "teste",
+      dt_inicio: "28/03/2023",
+      hr_inicio: "14:24",
+      dt_fim: "28/03/2023",
+      hr_fim: "15:31",
+      quantidade: "20",
+    },
+    {
+      id: "7cx7pba69skdxto",
+      numero: "5",
+      usuario: "teste",
+      dt_inicio: "28/03/2023",
+      hr_inicio: "14:24",
+      dt_fim: "28/03/2023",
+      hr_fim: "15:31",
+      quantidade: "20",
+    },
+  ];
+
+  const [detailsData, setDetailsData] = useState<any>(data);
   const search = async () => {
     try {
       await axios
         .get(
-          `http://${config.IP_SERVER}:${config.PORT}/order/production/resume?filial=${user.filial}&qtd=5`
+          `http://${config.IP_SERVER}:${config.PORT}/order/production/resume?filial=${user.filial}&qtd=${qtdOp}`
         )
         .then((response) => {
           setShowingData(response);
@@ -49,8 +73,21 @@ const TotalProduction = () => {
     search();
   }, []);
 
+  const handleShowMore = () => {
+    setloading(true);
+    console.log(`qtd ${qtdOp}`);
+    const qtd = qtdOp + 1;
+    console.log(`qtd ${qtd}`);
+    setQtdOp(qtd);
+    search();
+  };
+
   const handleMenu = () => {
     setPopupMenu(!popupMenu);
+  };
+
+  const handlePageConfirmation = () => {
+    navigate("/confirmation");
   };
 
   const handleLogout = () => {
@@ -61,7 +98,7 @@ const TotalProduction = () => {
   };
 
   return (
-    <div className="w-screen h-full flex flex-col items-center justify-start bg-primary">
+    <div className="w-screen h-full min-h-screen flex flex-col items-center justify-start bg-primary">
       <motion.button
         className="absolute top-4 right-4"
         whileTap={{ scale: 0.75 }}
@@ -78,38 +115,36 @@ const TotalProduction = () => {
           >
             <MdKeyboardBackspace className="w-14 h-14" />
           </motion.button>
-          <motion.button
-            whileHover={{ rotate: 360 }}
-            transition={{
-              duration: 0.5,
-            }}
-            onClick={() => {
-              setloading(true);
-              search();
-            }}
-          >
-            <MdRefresh className="w-14 h-14" />
-          </motion.button>
-          {/* <div className="w-auto h-auto flex flex-row items-center justify-center bg-gray-50 rounded-xl border-4 border-gray-400">
-            <input
-              type="number"
-              max={999999}
-              placeholder="Buscar OP..."
-              className="p-4 focus:outline-none bg-transparent focus:bg-transparent"
-              ref={ref}
-              autoFocus
-            />
-            <MdSearch
-              className=" m-4 cursor-pointer"
-              // onClick={search}
-            />
-          </div> */}
+          <div className="flex flex-row">
+            <motion.button
+              whileHover={{ rotate: 360 }}
+              transition={{
+                duration: 0.5,
+              }}
+              onClick={() => {
+                setloading(true);
+                search();
+              }}
+            >
+              <MdRefresh className="w-14 h-14" />
+            </motion.button>
+          </div>
         </div>
-        {/* <ResumeProduction data={} /> */}
         {showingData !== undefined &&
           showingData.data.data.map((data: any) => {
             return <ResumeProduction data={data} key={data.op} />;
           })}
+        <div className="w-auto h-auto my-4 flex flex-row items-center justify-center">
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.1 }}
+            type="button"
+            className="p-3 bg-slate-800 text-white rounded-lg uppercase font-bold drop-shadow-2xl"
+            onClick={handleShowMore}
+          >
+            Mostrar mais. . .
+          </motion.button>
+        </div>
 
         {popupMenu && (
           <div className="w-auto min-w-[120px] h-auto bg-white drop-shadow-md absolute top-14 right-4">
@@ -117,10 +152,10 @@ const TotalProduction = () => {
               {user.controller && (
                 <div
                   className="flex flex-row p-2 justify-start items-center cursor-pointer gap-1"
-                  // onClick={handlePageDados}
+                  onClick={handlePageConfirmation}
                 >
-                  <MdOutlineInsertChartOutlined />
-                  <p>Dados</p>
+                  <MdCheckCircleOutline />
+                  <p>Confirmação</p>
                 </div>
               )}
               <div
@@ -133,6 +168,7 @@ const TotalProduction = () => {
             </div>
           </div>
         )}
+
         {/* loaging data */}
         {loading && (
           <div className="absolute z-50 w-screen h-screen flex items-center justify-center backdrop-blur-sm bg-white/30">
