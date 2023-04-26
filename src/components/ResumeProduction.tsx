@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 const ResumeProduction = (data: any) => {
+  const [showData, setShowData] = useState(false);
+  const [prodData, setProdData2] = useState<any>();
   data = data.data;
+
+  const getData = async () => {
+    // setShowData(true);
+    try {
+      axios
+        .get(
+          `http://localhost:3380/order/production?op=${data.op}&filial=${data.filial}`
+        )
+        .then((response) => {
+          setProdData2(response.data.data);
+        })
+        .finally(() => {
+          setShowData(true);
+        });
+    } catch (error: any) {
+      console.log(error.toString());
+    }
+  };
 
   const formatData = (value: any) => {
     if (value === "0") {
@@ -14,6 +35,18 @@ const ResumeProduction = (data: any) => {
     const novaData = `${dia}/${mes}/${ano}`;
 
     return novaData;
+  };
+
+  const calcInterval = (h1: string, h2: string) => {
+    let ah1 = h1.split(":");
+    let ah2 = h2.split(":");
+
+    const mini = Number(ah1[0]) * 60 + Number(ah1[1]);
+    const mfim = Number(ah2[0]) * 60 + Number(ah2[1]);
+
+    const mtot = mfim - mini;
+
+    return mtot;
   };
 
   return (
@@ -64,19 +97,70 @@ const ResumeProduction = (data: any) => {
               {data.quantidade}
             </div>
           </div>
-          {/* <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center">
             <motion.button
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.1 }}
               type="button"
               className="p-3 bg-slate-800 text-white rounded-lg uppercase font-bold drop-shadow-2xl"
-              // onClick={auth}
+              onClick={() => getData()}
             >
               Detalhes
             </motion.button>
-          </div> */}
+          </div>
         </div>
       </div>
+
+      {showData && (
+        <div className="absolute z-50 left-0 w-full h-full backdrop-blur-sm bg-white/30">
+          <div className="flex flex-col items-center">
+            <div className=" w-full flex items-center justify-center">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.1 }}
+                type="button"
+                className="p-3 bg-slate-800 text-white rounded-lg uppercase font-bold drop-shadow-2xl"
+                onClick={() => setShowData(false)}
+              >
+                Fechar
+              </motion.button>
+            </div>
+            <div className="w-[80%] bg-pink-300 flex items-center justify-center mt-4">
+              <table className="table-auto w-full">
+                <thead>
+                  <th className="border">Numero</th>
+                  <th className="border">ID</th>
+                  <th className="border">Usuario</th>
+                  <th className="border">Dt Inicio</th>
+                  <th className="border">Hr Inicio</th>
+                  <th className="border">Dt Fim</th>
+                  <th className="border">Hr Fim</th>
+                  <th className="border">Tempo</th>
+                </thead>
+
+                {prodData.map(function (prod: any) {
+                  return (
+                    <tbody>
+                      <tr>
+                        <td className="border">{prod.numero}</td>
+                        <td className="border">{prod.id}</td>
+                        <td className="border">{prod.usuario}</td>
+                        <td className="border">{formatData(prod.dt_inicio)}</td>
+                        <td className="border">{prod.hr_inicio}</td>
+                        <td className="border">{formatData(prod.dt_fim)}</td>
+                        <td className="border">{prod.hr_fim}</td>
+                        <td className="border">
+                          {calcInterval(prod.hr_inicio, prod.hr_fim)}
+                        </td>
+                      </tr>
+                    </tbody>
+                  );
+                })}
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
