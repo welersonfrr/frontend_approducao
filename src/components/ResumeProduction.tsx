@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { config } from "../utils/config";
 import axios from "axios";
 
 const ResumeProduction = (data: any) => {
@@ -12,7 +13,7 @@ const ResumeProduction = (data: any) => {
     try {
       axios
         .get(
-          `http://localhost:3380/order/production?op=${data.op}&filial=${data.filial}`
+          `http://${config.IP_SERVER}:${config.PORT}/order/production?op=${data.op}&filial=${data.filial}`
         )
         .then((response) => {
           setProdData2(response.data.data);
