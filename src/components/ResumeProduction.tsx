@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { MdPrint } from "react-icons/md";
 import { config } from "../utils/config";
 import axios from "axios";
+import { useStateValue } from "../context/StateProvider";
+import { actionType } from "../context/reducer";
+import { useNavigate } from "react-router-dom";
 
 const ResumeProduction = (data: any) => {
   const [showData, setShowData] = useState(false);
   const [prodData, setProdData2] = useState<any>();
+  const [{ user, opData }, dispatch] = useStateValue();
+  const navigate = useNavigate();
   data = data.data;
 
   const getData = async () => {
@@ -36,6 +42,15 @@ const ResumeProduction = (data: any) => {
     const novaData = `${dia}/${mes}/${ano}`;
 
     return novaData;
+  };
+
+  const printProduction = async (printData: any) => {
+    dispatch({
+      type: actionType.SET_AP,
+      apData: printData,
+    });
+
+    navigate("/print");
   };
 
   const calcInterval = (h1: string, h2: string) => {
@@ -137,11 +152,12 @@ const ResumeProduction = (data: any) => {
                   <th className="border">Dt Fim</th>
                   <th className="border">Hr Fim</th>
                   <th className="border">Tempo</th>
+                  <th className="border">Print</th>
                 </thead>
 
                 {prodData.map(function (prod: any) {
                   return (
-                    <tbody>
+                    <tbody key={prod.id}>
                       <tr>
                         <td className="border">{prod.numero}</td>
                         <td className="border">{prod.id}</td>
@@ -152,6 +168,14 @@ const ResumeProduction = (data: any) => {
                         <td className="border">{prod.hr_fim}</td>
                         <td className="border">
                           {calcInterval(prod.hr_inicio, prod.hr_fim)}
+                        </td>
+                        <td className="border flex items-center justify-center">
+                          <MdPrint
+                            className="text-2xl cursor-pointer"
+                            onClick={() => {
+                              printProduction(prod);
+                            }}
+                          />
                         </td>
                       </tr>
                     </tbody>

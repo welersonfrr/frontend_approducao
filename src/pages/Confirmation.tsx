@@ -179,7 +179,7 @@ const Confirmation = () => {
               </p>
               <div className="w-auto h-auto flex flex-row bg-gray-50 rounded-xl border-4 border-gray-400">
                 <input
-                  className="p-4 focus:outline-none bg-transparent focus:bg-transparent"
+                  className="p-4 focus:outline-none bg-transparent focus:bg-transparent w-full"
                   placeholder="Observações"
                   autoFocus
                   ref={inputObs}

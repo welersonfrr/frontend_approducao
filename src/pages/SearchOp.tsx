@@ -62,7 +62,7 @@ const SearchOp = () => {
   const search = async () => {
     setloading(true);
     if (ref.current?.value === "") {
-      trowError("Por favor forneca uma OP");
+      trowError("Por favor forneça uma OP");
     } else {
       try {
         const result = await axios.get(
@@ -107,6 +107,11 @@ const SearchOp = () => {
           className="p-4 focus:outline-none bg-transparent focus:bg-transparent"
           ref={ref}
           autoFocus
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              search();
+            }
+          }}
         />
         <MdSearch className=" m-4 cursor-pointer" onClick={search} />
       </div>

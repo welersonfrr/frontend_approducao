@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useStateValue } from "../context/StateProvider";
+import { useNavigate } from "react-router-dom";
 
 const DataSheet = () => {
-  const [{ apData, opData }] = useStateValue();
+  const [{ apData, opData, user }] = useStateValue();
+  const navigate = useNavigate();
 
   const codbel = opData.codbel;
 
+  useEffect(() => {
+    if (user.username == null) {
+      navigate("/login");
+    }
+    if (apData.codigo === null) {
+      navigate("/");
+    }
+  }, []);
+
   const formatData = (value: any) => {
+    value = value ?? "";
     const dia = value.substr(6, 2);
     const mes = value.substr(4, 2);
     const ano = value.substr(0, 4);
