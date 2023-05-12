@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Print from "./pages/Print";
 import TotalProduction from "./pages/TotalProduction";
 import Confirmation from "./pages/Confirmation";
+import Productions from "./pages/Productions";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Route path="/*" element={<SearchOp />} />
           <Route path="/production" element={<ProductionDetails />} />
           <Route path="/print" element={<Print />} />
-          <Route path="/details" element={<TotalProduction />} />
+          <Route path="/data" element={<Productions />} />
           <Route path="/confirmation" element={<Confirmation />} />
         </Routes>
       </main>

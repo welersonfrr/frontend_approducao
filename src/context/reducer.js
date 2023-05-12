@@ -2,6 +2,7 @@ export const actionType = {
   SET_OP: "SET_OP",
   SET_USER: "SET_USER",
   SET_AP: "SET_AP",
+  SET_DETAILS: "SET_DETAILS",
 };
 
 const reducer = (state, action) => {
@@ -52,6 +53,14 @@ const reducer = (state, action) => {
           produto: action.apData.produto,
           quantidade: action.apData.quantidade,
           usuario: action.apData.usuario,
+        },
+      };
+    case actionType.SET_DETAILS:
+      console.log("SET_DETAILS");
+      return {
+        ...state,
+        detailsData: {
+          op: action.detailsData.op,
         },
       };
 

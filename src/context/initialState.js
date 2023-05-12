@@ -30,4 +30,7 @@ export const initialState = {
     quantidade: null,
     usuario: null,
   },
+  detailsData: {
+    op: null,
+  },
 };

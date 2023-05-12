@@ -44,7 +44,7 @@ const SearchOp = () => {
   };
 
   const handlePageDados = () => {
-    navigate("/details");
+    navigate("/data");
   };
   const handlePageConfirmation = () => {
     navigate("/confirmation");
