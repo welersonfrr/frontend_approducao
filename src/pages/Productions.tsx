@@ -44,8 +44,7 @@ const Productions = () => {
     try {
       await axios
         .get(
-          // `http://${config.IP_SERVER}:${config.PORT}/order/production?filial=${user.filial}&confirmed=${confirmed}`
-          `http://${config.IP_SERVER}:${config.PORT}/order/production?filial=020105&confirmed=${confirmed}`
+          `http://${config.IP_SERVER}:${config.PORT}/order/production?filial=${user.filial}&confirmed=${confirmed}`
         )
         .then((res) => {
           const nwArr = res.data.data.slice(indexMin, indexMax);
