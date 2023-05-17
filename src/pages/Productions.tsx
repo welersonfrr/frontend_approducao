@@ -65,6 +65,7 @@ const Productions = () => {
 
   const handleChangePage = (opt: string) => {
     // console.log(`${indexMin} ${indexMax}`);
+    setLoading(true);
 
     if (opt === "prev") {
       if (indexMin !== 0) {

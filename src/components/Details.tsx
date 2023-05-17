@@ -131,7 +131,16 @@ const Details = ({ op }: any) => {
                     </div>
                   </div>
                 </div>
-                <div className="bg-[#F5F5F7] rounded-xl p-1"></div>
+                <div className="bg-[#F5F5F7] rounded-xl p-1">
+                  <p>
+                    <span className="font-bold">Confirmado:</span>{" "}
+                    {data["confirm_date"]}
+                  </p>
+                  <p>
+                    {" "}
+                    <span className="font-bold">Obs:</span> {data["obs"]}
+                  </p>
+                </div>
               </div>
             </div>
             {/* tabela de produções */}
