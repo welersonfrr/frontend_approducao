@@ -7,7 +7,7 @@ import { actionType } from "../context/reducer";
 import { useNavigate } from "react-router-dom";
 import { MdPrint } from "react-icons/md";
 
-const Details = ({ op }: any) => {
+const Details = ({ filial, op }: any) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [arrProd, setArrProd] = useState([]);
@@ -51,7 +51,7 @@ const Details = ({ op }: any) => {
     const search = async () => {
       await axios
         .get(
-          `http://${config.IP_SERVER}:${config.PORT}/order/details?filial=020105&op=${op}`
+          `http://${config.IP_SERVER}:${config.PORT}/order/details?filial=${user.filial}&op=${op}`
         )
         .then((res) => {
           setData(res.data.data);

@@ -16,6 +16,7 @@ import { actionType } from "../context/reducer";
 import { Navigate, useNavigate } from "react-router-dom";
 import { initialState } from "../context/initialState";
 import { config } from "../utils/config";
+import MachineRow from "../components/MachineRow";
 
 const SearchOp = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -98,7 +99,8 @@ const SearchOp = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
+    <div className="w-screen h-screen flex flex-col items-center justify-evenly">
+      <MachineRow />
       <div className="w-auto h-auto flex flex-row items-center justify-center bg-gray-50 rounded-xl border-4 border-gray-400">
         <input
           type="number"

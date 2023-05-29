@@ -15,6 +15,7 @@ const reducer = (state, action) => {
           username: action.user.username,
           filial: action.user.filial,
           controller: action.user.controller,
+          maquinas: action.user.maquinas,
         },
       };
 

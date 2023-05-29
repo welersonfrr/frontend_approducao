@@ -69,7 +69,7 @@ const CardProduction = ({ prod }: any) => {
                 <MdClose className="text-[30px]" />
               </motion.button>
             </div>
-            <Details op={prod.op} />
+            <Details op={prod.op} filial={prod.filial} />
           </div>
         </div>
       )}

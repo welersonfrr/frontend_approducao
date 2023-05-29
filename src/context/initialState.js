@@ -3,6 +3,7 @@ export const initialState = {
     username: null,
     filial: null,
     controller: null,
+    maquinas: null,
   },
   opData: {
     codigo: null,
