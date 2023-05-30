@@ -16,6 +16,7 @@ const MachineItem = (props: any) => {
   console.log(preData);
   const [dis, setDis] = useState(true);
   const [res, setRes] = useState<any>(undefined);
+  const [opData, setOpData] = useState<any>();
   const qtdPad = useRef<any>(preData.qtdPad);
   const machineOp = useRef<any>(preData.op);
   const [{ user }, dispatch] = useStateValue();
@@ -46,6 +47,9 @@ const MachineItem = (props: any) => {
       const result = await axios.get(
         `http://${config.IP_SERVER}:${config.PORT}/order/machine/?op=${machineOp.current?.value}&filial=${user.filial}`
       );
+
+      setOpData(result.data.data);
+
       setloading(false);
       if (preData.op !== "" && preData.op === machineOp.current.value) {
         result.data.data["qtdPad"] = preData.qtdPad;
@@ -84,6 +88,10 @@ const MachineItem = (props: any) => {
   const production = async () => {
     if (res !== undefined) {
       try {
+        dispatch({
+          type: actionType.SET_OP,
+          opData: opData,
+        });
         const result = await axios.post(
           `http://${config.IP_SERVER}:${config.PORT}/order/production`,
           {
@@ -101,6 +109,8 @@ const MachineItem = (props: any) => {
           type: actionType.SET_AP,
           apData: result.data.data,
         });
+        console.log(result.data.data);
+
         setloading(false);
         navigate("/print");
       } catch (error: any) {
