@@ -37,8 +37,14 @@ const MachineItem = (props: any) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (machineOp.current.value === "") {
+      localStorage.setItem(props.name, '{"op":"","qtdPad":"-"}');
+    }
+  }, [dis]);
+
   const change = () => {
-    setDis(!dis);
+    setDis(false);
   };
 
   const search = async () => {
@@ -55,7 +61,6 @@ const MachineItem = (props: any) => {
         result.data.data["qtdPad"] = preData.qtdPad;
       }
       setRes(result.data.data);
-      //   setQtdPad(Number(result.data.data.qtdPad));
       qtdPad.current.value = Number(result.data.data.qtdPad);
       localStorage.setItem(
         props.name,
@@ -66,15 +71,11 @@ const MachineItem = (props: any) => {
       );
     } catch (error: any) {
       if (error.response?.status === 404) {
-        //   trowError("OP não encontrada.");
         setRes(undefined);
-        qtdPad.current.value = 0;
+        qtdPad.current.value = "-";
         setloading(false);
         machineOp.current.value = null;
       } else {
-        //   trowError(
-        //     `${error.toString()} - Contate o administrador do sistema.`
-        //   );
         setRes(undefined);
         setloading(false);
         qtdPad.current.value = 0;
@@ -133,7 +134,7 @@ const MachineItem = (props: any) => {
         )}
         <div
           className="w-[40px] h-[40px] ml-[280px] absolute rounded-full flex items-center justify-center cursor-pointer"
-          onClick={() => setDis(!dis)}
+          onClick={() => change()}
         >
           <MdOutlineModeEditOutline className="text-white text-[1.6rem]" />
         </div>
@@ -191,8 +192,7 @@ const MachineItem = (props: any) => {
                         props.name,
                         `{"op":"${preData.op}","qtdPad":"${qtdPad.current.value}"}`
                       );
-
-                      change();
+                      setDis(true);
                     }
                   }}
                   onBlur={() => {
@@ -200,7 +200,7 @@ const MachineItem = (props: any) => {
                       props.name,
                       `{"op":"${preData.op}","qtdPad":"${qtdPad.current.value}"}`
                     );
-                    change();
+                    setDis(true);
                   }}
                 ></input>
               </span>
