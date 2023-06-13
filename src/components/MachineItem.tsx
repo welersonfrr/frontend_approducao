@@ -88,32 +88,34 @@ const MachineItem = (props: any) => {
 
   const production = async () => {
     if (res !== undefined) {
+      setloading(true);
+
       try {
         dispatch({
           type: actionType.SET_OP,
           opData: opData,
         });
-        const result = await axios.post(
-          `http://${config.IP_SERVER}:${config.PORT}/order/production`,
-          {
-            filial: user.filial,
-            op: res.op,
-            codigo: res.codigo,
-            produto: res.produto,
-            lote: res.lote,
-            dt_validade: res.validade,
-            quantidade: qtdPad.current.value,
-            usuario: user.username,
-          }
-        );
-        dispatch({
-          type: actionType.SET_AP,
-          apData: result.data.data,
-        });
-        console.log(result.data.data);
-
-        setloading(false);
-        navigate("/print");
+        setTimeout(async () => {
+          const result = await axios.post(
+            `http://${config.IP_SERVER}:${config.PORT}/order/production`,
+            {
+              filial: user.filial,
+              op: res.op,
+              codigo: res.codigo,
+              produto: res.produto,
+              lote: res.lote,
+              dt_validade: res.validade,
+              quantidade: qtdPad.current.value,
+              usuario: user.username,
+            }
+          );
+          dispatch({
+            type: actionType.SET_AP,
+            apData: result.data.data,
+          });
+          console.log(result.data.data);
+          navigate("/print");
+        }, 800);
       } catch (error: any) {
         console.log(error.toString());
         setloading(false);
